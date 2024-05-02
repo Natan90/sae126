@@ -7,7 +7,7 @@ import control.HoleController;
 
 
 
-//ceci est un test
+//ceci est un testt
 
 public class HoleConsole {
 
