@@ -35,8 +35,8 @@ public class HoleStageModel extends GameStageModel {
 
     // define stage game elements
     private HoleBoard board;
-    private HolePawnPot blackPot;
-    private HolePawnPot redPot;
+    //private HolePawnPot blackPot;
+    //private HolePawnPot redPot;
     private Pawn[] blackPawns;
     private Pawn[] redPawns;
     private TextElement playerName;
@@ -70,6 +70,7 @@ public class HoleStageModel extends GameStageModel {
         addContainer(board);
     }
 
+    /*
     public HolePawnPot getBlackPot() {
         return blackPot;
     }
@@ -81,11 +82,14 @@ public class HoleStageModel extends GameStageModel {
     public HolePawnPot getRedPot() {
         return redPot;
     }
+
+     */
+    /*
     public void setRedPot(HolePawnPot redPot) {
         this.redPot = redPot;
         addContainer(redPot);
     }
-
+*/
     public Pawn[] getBlackPawns() {
         return blackPawns;
     }

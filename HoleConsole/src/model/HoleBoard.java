@@ -18,7 +18,7 @@ import java.awt.*;
 public class HoleBoard extends ContainerElement {
     public HoleBoard(int x, int y, GameStageModel gameStageModel) {
         // call the super-constructor to create a 3x3 grid, named "holeboard", and in x,y in space
-        super("holeboard", x, y, 3 , 3, gameStageModel);
+        super("holeboard", x, y, 7 , 7, gameStageModel);
     }
 
     public void setValidCells(int number) {
