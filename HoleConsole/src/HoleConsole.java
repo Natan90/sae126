@@ -5,6 +5,10 @@ import boardifier.control.StageFactory;
 import boardifier.model.Model;
 import control.HoleController;
 
+
+
+//ceci est un test
+
 public class HoleConsole {
 
     public static void main(String[] args) {
