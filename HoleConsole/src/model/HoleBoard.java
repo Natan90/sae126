@@ -8,121 +8,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 
-/**
- * Hole main board represent the element where pawns are put when played
- * Thus, a simple ContainerElement with 3 rows and 3 column is needed.
- * Nevertheless, in order to "simplify" the work for the controller part,
- * this class also contains method to determine all the valid cells to put a
- * pawn with a given value.
- */
 public class HoleBoard extends ContainerElement {
     public HoleBoard(int x, int y, GameStageModel gameStageModel) {
-        // call the super-constructor to create a 3x3 grid, named "holeboard", and in x,y in space
-        super("holeboard", x, y, 7 , 7, gameStageModel);
+        super("holeboard", x, y, 7, 7, gameStageModel);
     }
 
     public void setValidCells(int number) {
-        Logger.debug("called",this);
+        Logger.debug("called", this);
         resetReachableCells(false);
         List<Point> valid = computeValidCells(number);
-        if (valid != null) {
-            for(Point p : valid) {
-                reachableCells[p.y][p.x] = true;
-            }
+        for (Point p : valid) {
+            reachableCells[p.y][p.x] = true;
         }
     }
 
     public List<Point> computeValidCells(int number) {
-        List<Point> lst = new ArrayList<>();
-        Pawn p = null;
-        // if the grid is empty, is it the first turn and thus, all cells are valid
-        if (isEmpty()) {
-            // i are rows
-            for(int i=0;i<7;i++) {
-                // j are cols
-                for (int j = 0; j < 7; j++) {
-                    // cols is in x direction and rows are in y direction, so create a point in (j,i)
-                    lst.add(new Point(j,i));
-                }
-            }
-            return lst;
-        }
-        // else, take each empty cell and check if it is valid
-        for(int i=0;i<7;i++) {
-            for(int j=0;j<7;j++) {
-                if (isEmptyAt(i,j)) {
-                    // check adjacence in row-1
-                    if (i-1 >= 0) {
-                        if (j-1>=0) {
-                            p = (Pawn)getElement(i-1,j-1);
-
-                            // check if same parity
-                            if ((p != null) && ( p.getNumber()%2 == number%2)) {
-                                lst.add(new Point(j,i));
-                                continue; // go to the next point
-                            }
+        List<Point> validCells = new ArrayList<>();
+        // Loop through each cell on the board
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                // Check if the cell is empty
+                if (isEmptyAt(i, j)) {
+                    // Check if it's the first turn (placement is totally free)
+                    if (isEmpty()) {
+                        validCells.add(new Point(j, i));
+                    } else {
+                        // Check adjacency to a cube of the opposite color
+                        if (adjacentToOppositeColorCube(i, j, number)) {
+                            validCells.add(new Point(j, i));
                         }
-                        p = (Pawn)getElement(i-1,j);
-                        // check if different parity
-                        if ((p != null) && ( p.getNumber()%2 != number%2)) {
-                            lst.add(new Point(j,i));
-                            continue; // go to the next point
-                        }
-                        if (j+1<=2) {
-                            p = (Pawn)getElement(i-1,j+1);
-                            // check if same parity
-                            if ((p != null) && ( p.getNumber()%2 == number%2)) {
-                                lst.add(new Point(j,i));
-                                continue; // go to the next point
-                            }
-                        }
-                    }
-                    // check adjacence in row+1
-                    if (i+1 <= 2) {
-                        if (j-1>=0) {
-                            p = (Pawn)getElement(i+1,j-1);
-                            // check if same parity
-                            if ((p != null) && ( p.getNumber()%2 == number%2)) {
-                                lst.add(new Point(j,i));
-                                continue; // go to the next point
-                            }
-                        }
-                        p = (Pawn)getElement(i+1,j);
-                        // check if different parity
-                        if ((p != null) && ( p.getNumber()%2 != number%2)) {
-                            lst.add(new Point(j,i));
-                            continue; // go to the next point
-                        }
-                        if (j+1<=2) {
-                            p = (Pawn)getElement(i+1,j+1);
-                            // check if same parity
-                            if ((p != null) && ( p.getNumber()%2 == number%2)) {
-                                lst.add(new Point(j,i));
-                                continue; // go to the next point
-                            }
-                        }
-                    }
-                    // check adjacence in row
-                    if (j-1>=0) {
-                        p = (Pawn)getElement(i,j-1);
-                        // check if different parity
-                        if ((p != null) && ( p.getNumber()%2 != number%2)) {
-                            lst.add(new Point(j,i));
-                            continue; // go to the next point
-                        }
-                    }
-                    if (j+1<=2) {
-                        p = (Pawn)getElement(i,j+1);
-                        // check if different parity
-                        if ((p != null) && ( p.getNumber()%2 != number%2)) {
-                            lst.add(new Point(j,i));
-                            continue; // go to the next point
-                        }
-
                     }
                 }
             }
         }
-        return lst;
+        return validCells;
+    }
+
+    // Method to check if a cell is adjacent to a cube of the opposite color
+    private boolean adjacentToOppositeColorCube(int row, int col, int number) {
+        // Check adjacent cells
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                int newRow = row + i;
+                int newCol = col + j;
+                // Check if the new position is within the board boundaries
+                if (newRow >= 0 && newRow < 7 && newCol >= 0 && newCol < 7) {
+                    // Check if the adjacent cell contains a cube of the opposite color
+                    Pawn adjacentCube = (Pawn) getElement(newRow, newCol);
+                    if (adjacentCube != null && adjacentCube.getNumber() % 2 != number % 2) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

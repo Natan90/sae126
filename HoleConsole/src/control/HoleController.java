@@ -20,9 +20,12 @@ public class HoleController extends Controller {
     BufferedReader consoleIn;
     boolean firstPlayer;
 
+    private int pawnIndex;
+
     public HoleController(Model model, View view) {
         super(model, view);
         firstPlayer = true;
+        pawnIndex = 0;
     }
 
     /**
@@ -55,7 +58,7 @@ public class HoleController extends Controller {
                 System.out.print(p.getName()+ " > ");
                 try {
                     String line = consoleIn.readLine();
-                    if (line.length() == 3) {
+                    if (line.length() == 2) {
                         ok = analyseAndPlay(line);
                     }
                     if (!ok) {
@@ -65,6 +68,7 @@ public class HoleController extends Controller {
                 catch(IOException e) {}
             }
         }
+        
     }
 
     public void endOfTurn() {
@@ -78,20 +82,20 @@ public class HoleController extends Controller {
     private boolean analyseAndPlay(String line) {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
         // get the pawn value from the first char
-        int pawnIndex = (int) (line.charAt(0) - '1');
-        if ((pawnIndex<0)||(pawnIndex>3)) return false;
+        if ((pawnIndex < 0) || (pawnIndex > 24)) return false;
+
+
         // get the ccords in the board
-        int col = (int) (line.charAt(1) - 'A');
-        int row = (int) (line.charAt(2) - '1');
+        int col = (int) (line.charAt(0) - 'A');
+        int row = (int) (line.charAt(1) - '1');
         // check coords validity
-        if ((row<0)||(row>6)) return false;
-        if ((col<0)||(col>6)) return false;
+        if ((row < 0) || (row > 6)) return false;
+        if ((col < 0) || (col > 6)) return false;
         // check if the pawn is still in its pot
         ContainerElement pot = null;
         if (model.getIdPlayer() == 0) {
             pot = gameStage.getBlackPot();
-        }
-        else {
+        } else {
             pot = gameStage.getRedPot();
         }
         if (pot.isEmptyAt(pawnIndex,0)) return false;
@@ -99,11 +103,14 @@ public class HoleController extends Controller {
         // compute valid cells for the chosen pawn
         gameStage.getBoard().setValidCells(pawnIndex+1);
         if (!gameStage.getBoard().canReachCell(row,col)) return false;
-
         ActionList actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", row, col);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         ActionPlayer play = new ActionPlayer(model, this, actions);
         play.start();
+
+        pawnIndex++;
+
+        System.out.println(pawnIndex+ " "+pawn);
         return true;
     }
 }
