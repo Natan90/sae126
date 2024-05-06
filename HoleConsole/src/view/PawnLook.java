@@ -19,10 +19,10 @@ public class PawnLook extends ElementLook {
 
         Pawn pawn = (Pawn)element;
         if (pawn.getColor() == Pawn.PAWN_BLACK) {
-            shape[0][0] = ConsoleColor.WHITE + ConsoleColor.BLACK_BACKGROUND + pawn.getNumber() + ConsoleColor.RESET;
+            shape[0][0] = ConsoleColor.PURPLE_BACKGROUND + " " + ConsoleColor.RESET;
         }
         else {
-            shape[0][0] = ConsoleColor.BLACK + ConsoleColor.RED_BACKGROUND + pawn.getNumber() + ConsoleColor.RESET;
+            shape[0][0] = ConsoleColor.GREEN_BACKGROUND + " " + ConsoleColor.RESET;
         }
     }
 }

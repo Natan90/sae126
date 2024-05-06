@@ -77,7 +77,6 @@ public class HoleStageModel extends GameStageModel {
         this.blackPot = blackPot;
         addContainer(blackPot);
     }
-
     public HolePawnPot getRedPot() {
         return redPot;
     }
@@ -131,6 +130,7 @@ public class HoleStageModel extends GameStageModel {
             }
         });
     }
+
 
     private void computePartyResult() {
         int idWinner = -1;

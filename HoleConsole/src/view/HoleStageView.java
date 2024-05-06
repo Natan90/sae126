@@ -59,7 +59,7 @@ public class HoleStageView extends GameStageView {
         addLook(new ClassicBoardLook(2, 4, model.getBoard(), 1, 1, true));
         // create looks for both pots
         addLook(new BlackPawnPotLook(model.getBlackPot()));
-        addLook(new RedPawnPotLook(2, 4, model.getRedPot()));
+        addLook(new RedPawnPotLook(model.getRedPot()));
         // create looks for all pawns
         for(int i=0;i<24;i++) {
             addLook(new PawnLook(model.getBlackPawns()[i]));
