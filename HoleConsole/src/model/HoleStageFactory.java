@@ -43,7 +43,7 @@ public class HoleStageFactory extends StageElementsFactory {
         stageModel.setBoard(board);
 
         //create the black pot in 18,0 in the virtual space
-        HolePawnPot blackPot = new HolePawnPot(30,0, stageModel);
+        HolePawnPot blackPot = new HolePawnPot(60,0, stageModel);
         // assign the black pot to the game stage model
         stageModel.setBlackPot(blackPot);
         //create the black pot in 25,0 in the virtual space
@@ -55,21 +55,22 @@ public class HoleStageFactory extends StageElementsFactory {
             NB: their coordinates are by default 0,0 but since they are put
             within the pots, their real coordinates will be computed by the view
          */
-        Pawn[] blackPawns = new Pawn[4];
-        for(int i=0;i<4;i++) {
+        Pawn[] blackPawns = new Pawn[24];
+        for(int i=0;i<24;i++) {
             blackPawns[i] = new Pawn(i + 1, Pawn.PAWN_BLACK, stageModel);
         }
         // assign the black pawns to the game stage model
         stageModel.setBlackPawns(blackPawns);
-        Pawn[] redPawns = new Pawn[4];
-        for(int i=0;i<4;i++) {
+        Pawn[] redPawns = new Pawn[24];
+        for(int i=0;i<24;i++) {
             redPawns[i] = new Pawn(i + 1, Pawn.PAWN_RED, stageModel);
         }
         // assign the black pawns to the game stage model
         stageModel.setRedPawns(redPawns);
+        //stageModel.setBlackPawns(blackPawns);
 
         // finally put the pawns to their pot
-        for (int i=0;i<4;i++) {
+        for (int i=0;i<24;i++) {
             blackPot.addElement(blackPawns[i], i,0);
             redPot.addElement(redPawns[i], i,0);
         }

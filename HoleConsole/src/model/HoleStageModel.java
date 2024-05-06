@@ -45,8 +45,8 @@ public class HoleStageModel extends GameStageModel {
 
     public HoleStageModel(String name, Model model) {
         super(name, model);
-        blackPawnsToPlay = 4;
-        redPawnsToPlay = 4;
+        blackPawnsToPlay = 24;
+        redPawnsToPlay = 24;
         setupCallbacks();
     }
 
