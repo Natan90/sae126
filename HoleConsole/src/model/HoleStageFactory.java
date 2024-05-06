@@ -43,11 +43,11 @@ public class HoleStageFactory extends StageElementsFactory {
         stageModel.setBoard(board);
 
         //create the black pot in 18,0 in the virtual space
-        HolePawnPot blackPot = new HolePawnPot(18,0, stageModel);
+        HolePawnPot blackPot = new HolePawnPot(30,0, stageModel);
         // assign the black pot to the game stage model
         stageModel.setBlackPot(blackPot);
         //create the black pot in 25,0 in the virtual space
-        HolePawnPot redPot = new HolePawnPot(25,0, stageModel);
+        HolePawnPot redPot = new HolePawnPot(38,0, stageModel);
         // assign the red pot to the game stage model
         stageModel.setRedPot(redPot);
 

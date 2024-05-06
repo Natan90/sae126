@@ -84,8 +84,8 @@ public class HoleController extends Controller {
         int col = (int) (line.charAt(1) - 'A');
         int row = (int) (line.charAt(2) - '1');
         // check coords validity
-        if ((row<0)||(row>2)) return false;
-        if ((col<0)||(col>2)) return false;
+        if ((row<0)||(row>6)) return false;
+        if ((col<0)||(col>6)) return false;
         // check if the pawn is still in its pot
         ContainerElement pot = null;
         if (model.getIdPlayer() == 0) {
