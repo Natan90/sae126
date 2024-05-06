@@ -5,18 +5,6 @@ import boardifier.control.StageFactory;
 import boardifier.model.Model;
 import control.HoleController;
 
-
-
-//ceci est un testt
-// Semih Aslan
-
-//ceci est un testt
-// Mattéo Vo
-//test
-
-//ceci est un test
-//esteban le racist
-
 public class HoleConsole {
 
     public static void main(String[] args) {

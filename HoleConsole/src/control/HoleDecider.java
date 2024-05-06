@@ -7,7 +7,7 @@ import boardifier.model.GameElement;
 import boardifier.model.Model;
 import boardifier.model.action.ActionList;
 import model.HoleBoard;
-//import model.HolePawnPot;
+import model.HolePawnPot;
 import model.HoleStageModel;
 import model.Pawn;
 
@@ -29,13 +29,11 @@ public class HoleDecider extends Decider {
         // do a cast get a variable of the real type to get access to the attributes of HoleStageModel
         HoleStageModel stage = (HoleStageModel)model.getGameStage();
         HoleBoard board = stage.getBoard(); // get the board
-        //HolePawnPot pot = null; // the pot where to take a pawn
+        HolePawnPot pot = null; // the pot where to take a pawn
         GameElement pawn = null; // the pawn that is moved
         int rowDest = 0; // the dest. row in board
         int colDest = 0; // the dest. col in board
 
-
-        /*
         if (model.getIdPlayer() == Pawn.PAWN_BLACK) {
             pot = stage.getBlackPot();
         }
@@ -59,8 +57,6 @@ public class HoleDecider extends Decider {
                 }
             }
         }
-
-         */
 
         ActionList actions = ActionFactory.generatePutInContainer( model, pawn, "holeboard", rowDest, colDest);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
