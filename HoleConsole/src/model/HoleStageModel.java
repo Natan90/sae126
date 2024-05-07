@@ -114,6 +114,52 @@ public class HoleStageModel extends GameStageModel {
     }
 
 
+    public boolean checkWinCondition() {
+        for (int row = 0; row < 7; row++) {
+            for (int col = 0; col < 7; col++) {
+                GameElement element = board.getElement(row, col);
+                if (element instanceof Pawn) {
+                    int color = ((Pawn) element).getColor();
+
+                    if (checkAlignment(row, col, 0, 1, color)) return true;
+                    if (checkAlignment(row, col, 1, 0, color)) return true;
+                    if (checkAlignment(row, col, 1, 1, color)) return true;
+                    if (checkAlignment(row, col, -1, 1, color)) return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkAlignment(int startRow, int startCol, int rowDelta, int colDelta, int color) {
+        for (int i = 0; i < 4; i++) {
+            int row = startRow + i * rowDelta;
+            int col = startCol + i * colDelta;
+
+            if (row < 0 || row >= 7 || col < 0 || col >= 7) return false;
+
+            GameElement element = board.getElement(row, col);
+            if (element instanceof Pawn) {
+                int cellColor = ((Pawn) element).getColor();
+
+                if (cellColor != color) return false;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+
+
+
     private void setupCallbacks() {
         onPutInContainer( (element, gridDest, rowDest, colDest) -> {
             // just check when pawns are put in 3x3 board

@@ -217,4 +217,5 @@ public abstract class GameStageModel {
         return list;
     }
 
+    public abstract boolean checkWinCondition();
 }

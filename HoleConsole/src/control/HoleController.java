@@ -72,6 +72,10 @@ public class HoleController extends Controller {
     }
 
     public void endOfTurn() {
+        if (model.getGameStage().checkWinCondition()) {
+            System.out.println("Gagné !");
+            return;
+        }
 
         model.setNextPlayer();
         // get the new player to display its name
@@ -79,6 +83,8 @@ public class HoleController extends Controller {
         HoleStageModel stageModel = (HoleStageModel) model.getGameStage();
         stageModel.getPlayerName().setText(p.getName());
     }
+
+
     private boolean analyseAndPlay(String line) {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
         // get the pawn value from the first char
