@@ -24,7 +24,7 @@ public class GridLook extends ContainerLook {
         }
         // check if the container is also a grid, i.e. has no spanning cells
         if (containerElement.hasSpannings()) {
-            Logger.trace("TRYING TO SET A GRID LOOK FOR A CONTAINER THAT HAS SPANNIG CELLS. RESULT UNKNOWN");
+            //Logger.trace("TRYING TO SET A GRID LOOK FOR A CONTAINER THAT HAS SPANNIG CELLS. RESULT UNKNOWN");
         }
 
         this.borderWidth = borderWidth;
@@ -55,7 +55,7 @@ public class GridLook extends ContainerLook {
      * the space dedicated to the look is already fixed.
      */
     protected void render() {
-        Logger.trace("called", this);
+        //Logger.trace("called", this);
         // create & clear the viewport if needed
         setSize(getWidth(), getHeight());
         // clear the viewport => if there are more than inners looks to render (e.g. borders), must override this method
@@ -67,7 +67,7 @@ public class GridLook extends ContainerLook {
     protected void renderBorders() {
         if (borderWidth < 1) return;
 
-        Logger.trace("update borders", this);
+        //Logger.trace("update borders", this);
 
         // start by drawing the border of each cell, which will be change after
         for (int i = 0; i < nbRows; i++) {

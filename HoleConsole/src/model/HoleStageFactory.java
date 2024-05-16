@@ -46,7 +46,7 @@ public class HoleStageFactory extends StageElementsFactory {
         HolePawnPot blackPot = new HolePawnPot(60,0, stageModel);
         // assign the black pot to the game stage model
         stageModel.setBlackPot(blackPot);
-        //create the black pot in 25,0 in the virtual space
+        //create the red pot in 25,0 in the virtual space
         HolePawnPot redPot = new HolePawnPot(38,0, stageModel);
         // assign the red pot to the game stage model
         stageModel.setRedPot(redPot);
@@ -67,12 +67,18 @@ public class HoleStageFactory extends StageElementsFactory {
         }
         // assign the black pawns to the game stage model
         stageModel.setRedPawns(redPawns);
-        //stageModel.setBlackPawns(blackPawns);
 
         // finally put the pawns to their pot
-        for (int i=0;i<24;i++) {
-            blackPot.addElement(blackPawns[i], i,0);
-            redPot.addElement(redPawns[i], i,0);
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 8; col++) {
+                int index = row * 8 + col; // Calcul de l'index en fonction de la ligne et de la colonne
+                if (index < blackPawns.length) {
+                    blackPot.addElement(blackPawns[index], col, row);
+                }
+                if (index < redPawns.length) {
+                    redPot.addElement(redPawns[index], col, row);
+                }
+            }
         }
 
         /* Example with a main container that takes the ownership of the location

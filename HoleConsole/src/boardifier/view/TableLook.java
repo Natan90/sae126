@@ -72,7 +72,7 @@ public class TableLook extends ContainerLook {
      * if there are some row/cols that have a fixed size, they must be "visible" on screen
      */
     protected void render() {
-        Logger.trace("called", this);
+        //Logger.trace("called", this);
         // create & clear the viewport if needed
         setSize(getWidth(), getHeight());
         // clear the viewport => if there are more than inners looks to render (e.g. borders), must override this method
@@ -85,7 +85,7 @@ public class TableLook extends ContainerLook {
         if (borderWidth < 1) return;
         // prevent displaying something if grid width or gridHeight = 0
         if ((getGridHeight() == 0) || (getGridWidth() == 0)) return;
-        Logger.trace("update borders", this);
+        //Logger.trace("update borders", this);
         // start by drawing the border of each cell, which will be change after
         for (int i = 0; i < nbRows; i++) {
             for (int j = 0; j < nbCols; j++) {

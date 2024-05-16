@@ -10,6 +10,7 @@ import boardifier.model.Player;
 import boardifier.model.action.ActionList;
 import boardifier.view.View;
 import model.HoleStageModel;
+import model.Pawn;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,10 +23,16 @@ public class HoleController extends Controller {
 
     private int pawnIndex;
 
+    private int blackPawnIndex;
+    private int redPawnIndex;
+
     public HoleController(Model model, View view) {
         super(model, view);
         firstPlayer = true;
         pawnIndex = 0;
+
+        blackPawnIndex = 0;
+        redPawnIndex = 0;
     }
 
     /**
@@ -35,7 +42,7 @@ public class HoleController extends Controller {
     public void stageLoop() {
         consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
-        while(! model.isEndStage()) {
+        while(! model.getGameStage().checkWinCondition()) {
             playTurn();
             endOfTurn();
             update();
@@ -68,14 +75,10 @@ public class HoleController extends Controller {
                 catch(IOException e) {}
             }
         }
-        
+
     }
 
     public void endOfTurn() {
-        if (model.getGameStage().checkWinCondition()) {
-            System.out.println("Gagné !");
-            return;
-        }
 
         model.setNextPlayer();
         // get the new player to display its name
@@ -87,36 +90,69 @@ public class HoleController extends Controller {
 
     private boolean analyseAndPlay(String line) {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
-        // get the pawn value from the first char
         if ((pawnIndex < 0) || (pawnIndex > 24)) return false;
 
-
-        // get the ccords in the board
         int col = (int) (line.charAt(0) - 'A');
         int row = (int) (line.charAt(1) - '1');
-        // check coords validity
         if ((row < 0) || (row > 6)) return false;
         if ((col < 0) || (col > 6)) return false;
-        // check if the pawn is still in its pot
+
         ContainerElement pot = null;
         if (model.getIdPlayer() == 0) {
             pot = gameStage.getBlackPot();
         } else {
             pot = gameStage.getRedPot();
         }
-        if (pot.isEmptyAt(pawnIndex,0)) return false;
-        GameElement pawn = pot.getElement(pawnIndex,0);
-        // compute valid cells for the chosen pawn
-        gameStage.getBoard().setValidCells(pawnIndex+1);
-        if (!gameStage.getBoard().canReachCell(row,col)) return false;
+        if (pot.isEmptyAt(pawnIndex, 0)) return false;
+        GameElement pawn = pot.getElement(pawnIndex, 0);
+
+        if (hasEmptyCells()) {
+            gameStage.getBoard().setValidCells(pawnIndex + 1);
+            if (!gameStage.getBoard().canReachCell(row, col)) return false;
+        } else {
+            if (!isAdjacentToAnotherPawn(row, col)) return false;
+        }
+
         ActionList actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", row, col);
-        actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
+        actions.setDoEndOfTurn(true);
         ActionPlayer play = new ActionPlayer(model, this, actions);
         play.start();
 
         pawnIndex++;
 
-        System.out.println(pawnIndex+ " "+pawn);
+        System.out.println(pawnIndex + " " + pawn);
+
         return true;
     }
+    private boolean isAdjacentToAnotherPawn(int row, int col) {
+        HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
+        int[][] directions = {
+                {-1, 0}, {1, 0}, {0, -1}, {0, 1}, // up, down, left, right
+                {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // diagonals
+        };
+
+        for (int[] dir : directions) {
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+            if (newRow >= 0 && newRow <= 6 && newCol >= 0 && newCol <= 6) {
+                if (!gameStage.getBoard().isEmptyAt(newRow, newCol)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean hasEmptyCells() {
+        HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
+        for (int row = 0; row <= 6; row++) {
+            for (int col = 0; col <= 6; col++) {
+                if (gameStage.getBoard().isEmptyAt(row, col)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
 }

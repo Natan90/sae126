@@ -207,6 +207,6 @@ public abstract class ElementLook {
         // moving the look is done just after that.
         element.setLocation(x,y, false);
         // second, move the look group
-        Logger.trace("look location changed to "+x+","+y, this);
+        //Logger.trace("look location changed to "+x+","+y, this);
     }
 }
