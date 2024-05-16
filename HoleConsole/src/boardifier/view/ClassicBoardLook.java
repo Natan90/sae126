@@ -38,7 +38,7 @@ public class ClassicBoardLook extends GridLook{
      * the space dedicated to the look is already fixed.
      */
     protected void render() {
-        Logger.trace("called", this);
+        //Logger.trace("called", this);
         // create & clear the viewport if needed
         setSize(getWidth(), getHeight());
         // clear the viewport => if there are more than inners looks to render (e.g. borders), must override this method
@@ -51,7 +51,7 @@ public class ClassicBoardLook extends GridLook{
     protected void renderCoords() {
 
         if (!showCoords) return;
-        Logger.trace("update coords", this);
+        //Logger.trace("update coords", this);
 
         for (int i = 0; i < nbRows; i++) {
             int n = i + 1;

@@ -435,8 +435,8 @@ public class ContainerLook extends ElementLook {
             }
         }
 
-        Logger.trace("finished recompute row height for ["+this+"] : ");
-        for(int i=0;i<nbRows;i++) Logger.trace(rowsHeight[i]+" ");
+        //Logger.trace("finished recompute row height for ["+this+"] : ");
+        //for(int i=0;i<nbRows;i++) Logger.trace(rowsHeight[i]+" ");
     }
 
     private void updateColWidth() {
@@ -474,8 +474,8 @@ public class ContainerLook extends ElementLook {
                 }
             }
         }
-        Logger.trace("finished recompute cols width for ["+this+"] : ");
-        for(int i=0;i<nbCols;i++) Logger.trace(colsWidth[i]+" ");
+        //Logger.trace("finished recompute cols width for ["+this+"] : ");
+        //for(int i=0;i<nbCols;i++) Logger.trace(colsWidth[i]+" ");
 
     }
 
@@ -558,7 +558,7 @@ public class ContainerLook extends ElementLook {
 
     public void updateInners(boolean rowColUpdate) {
 
-        Logger.trace("called", this);
+        //Logger.trace("called", this);
         if (rowColUpdate) {
             updateRowHeight();
             updateColWidth();
@@ -567,7 +567,7 @@ public class ContainerLook extends ElementLook {
             ContainerLook up = (ContainerLook) parent;
             // back to the top to propagate changes
             while (up != null) {
-                Logger.trace("change in the structure => call parent updateInners()", this);
+                //Logger.trace("change in the structure => call parent updateInners()", this);
                 up.updateInners();
                 up = (ContainerLook) up.parent;
             }
@@ -578,12 +578,12 @@ public class ContainerLook extends ElementLook {
 
     @Override
     public void onFaceChange() {
-        Logger.trace("called", this);
+        //Logger.trace("called", this);
         updateInners();
     }
 
     protected void render() {
-        Logger.trace("called", this);
+        //Logger.trace("called", this);
         // create & clear the viewport if needed
         setSize(getWidth(), getHeight());
         // clear the viewport => if there are more than inners looks to render (e.g. borders), must override this method
