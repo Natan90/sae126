@@ -64,7 +64,6 @@ public class HoleBoard extends ContainerElement {
 
                     //if (adjacentCube != null && adjacentCube.getNumber() % 2 != number % 2) {
                     if (adjacentCube != null && lastCubePosition != null && newRow == lastCubePosition.y && newCol == lastCubePosition.x) {
-                        System.out.println(lastCubePosition);
                         return true;
                     }
                 }
@@ -73,4 +72,3 @@ public class HoleBoard extends ContainerElement {
         return false;
     }
 }
-

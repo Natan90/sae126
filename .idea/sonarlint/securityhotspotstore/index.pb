@@ -1,18 +1,11 @@
 
-9
-	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-P
- HoleConsole/src/HoleConsole.java,a/b/abff228efedcb4e81db28368ad5fe42b1195709c
-]
--.idea/sonarlint/securityhotspotstore/index.pb,8/8/88a9255124c95bdc913197c120a8d560edc59c8e
-:
-
-sae126.iml,0/f/0fcebb296d0b0a7a8085ef17c9372a363a828681
-Å
-Q.idea/sonarlint/securityhotspotstore/8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d,1/0/10a03f31c4dce92cb371e761ce9429428bb6c176
-w
-G.idea/sonarlint/issuestore/8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d,b/4/b4a0b63ce8560bbc5de0f9995c20cc861dc2adb3
-Å
-Q.idea/sonarlint/securityhotspotstore/a/b/abff228efedcb4e81db28368ad5fe42b1195709c,0/5/050f5c40188e654338a79298591201473b57cce7
-S
-#.idea/sonarlint/issuestore/index.pb,9/f/9fe84ebb15faf917b7def6236dba604453cc61e0
+T
+$HoleConsole/src/model/HoleBoard.java,5/e/5e0cec0981a917e9b6ceecf3a741a4e0074839f3
+[
++HoleConsole/src/control/HoleController.java,3/0/30c699beb90df32f7acebcd9ba4afbc35186cf45
+Y
+)HoleConsole/src/model/HoleStageModel.java,7/8/781607cbf9bac48517b23dae2e00482f1e1f44b8
+^
+.HoleConsole/src/boardifier/control/Logger.java,6/5/65c35297e9799871c46725ac23814e5638c041a0
+[
++HoleConsole/src/model/HoleStageFactory.java,7/b/7bf48386f9825885d4b27a25fdd1e12d7ea7b0ff

@@ -70,7 +70,7 @@ public class HoleStageFactory extends StageElementsFactory {
 
         // finally put the pawns to their pot
         for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 8; col++) {
+            for (int col = 0; col < 24; col++) {
                 int index = row * 8 + col; // Calcul de l'index en fonction de la ligne et de la colonne
                 if (index < blackPawns.length) {
                     blackPot.addElement(blackPawns[index], col, row);
