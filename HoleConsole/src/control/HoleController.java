@@ -9,8 +9,10 @@ import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.model.action.ActionList;
 import boardifier.view.View;
+import model.HoleBoard;
 import model.HoleStageModel;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -116,7 +118,12 @@ public class HoleController extends Controller {
 
         pawnIndex++;
 
+        HoleBoard.lastCubePosition = new Point(col, row);
+
         System.out.println(pawnIndex+ " "+pawn);
         return true;
     }
+
+    
+
 }

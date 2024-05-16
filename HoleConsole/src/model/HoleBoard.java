@@ -7,10 +7,15 @@ import boardifier.model.ContainerElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
+import java.util.Objects;
 
 public class HoleBoard extends ContainerElement {
+
+    public static Point lastCubePosition = null;
     public HoleBoard(int x, int y, GameStageModel gameStageModel) {
+
         super("holeboard", x, y, 7, 7, gameStageModel);
+
     }
 
     public void setValidCells(int number) {
@@ -34,7 +39,7 @@ public class HoleBoard extends ContainerElement {
                         validCells.add(new Point(j, i));
                     } else {
                         // Check adjacency to a cube of the opposite color
-                        if (adjacentToOppositeColorCube(i, j, number)) {
+                        if (adjacentToLastCube(i, j, number)) {
                             validCells.add(new Point(j, i));
                         }
                     }
@@ -45,7 +50,8 @@ public class HoleBoard extends ContainerElement {
     }
 
     // Method to check if a cell is adjacent to a cube of the opposite color
-    private boolean adjacentToOppositeColorCube(int row, int col, int number) {
+    private boolean adjacentToLastCube(int row, int col, int number) {
+
         // Check adjacent cells
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
@@ -55,7 +61,10 @@ public class HoleBoard extends ContainerElement {
                 if (newRow >= 0 && newRow < 7 && newCol >= 0 && newCol < 7) {
                     // Check if the adjacent cell contains a cube of the opposite color
                     Pawn adjacentCube = (Pawn) getElement(newRow, newCol);
-                    if (adjacentCube != null && adjacentCube.getNumber() % 2 != number % 2) {
+
+                    //if (adjacentCube != null && adjacentCube.getNumber() % 2 != number % 2) {
+                    if (adjacentCube != null && lastCubePosition != null && newRow == lastCubePosition.y && newCol == lastCubePosition.x) {
+                        System.out.println(lastCubePosition);
                         return true;
                     }
                 }
