@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import boardifier.control.Logger;
 import boardifier.model.GameException;
 import boardifier.view.View;
@@ -11,40 +12,49 @@ public class HoleConsole {
 
         Logger.setLevel(Logger.LOGGER_TRACE);
         Logger.setVerbosity(Logger.VERBOSE_HIGH);
-        int mode = 0;
-        if (args.length == 1) {
+
+        Scanner scanner = new Scanner(System.in);
+        int mode = -1;
+
+        while (mode < 0 || mode > 2) {
+            System.out.println("Veuillez choisir un mode de jeu:");
+            System.out.println("0: Deux joueurs humains");
+            System.out.println("1: Un joueur humain contre un ordinateur");
+            System.out.println("2: Deux ordinateurs");
+            System.out.print("Entrez le numéro du mode: ");
             try {
-                mode = Integer.parseInt(args[0]);
-                if ((mode <0) || (mode>2)) mode = 0;
-            }
-            catch(NumberFormatException e) {
-                mode = 0;
+                mode = Integer.parseInt(scanner.nextLine());
+                if (mode < 0 || mode > 2) {
+                    System.out.println("Mode invalide. Veuillez réessayer.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrée invalide. Veuillez entrer un numéro.");
             }
         }
+
         Model model = new Model();
         if (mode == 0) {
             model.addHumanPlayer("player1");
             model.addHumanPlayer("player2");
-        }
-        else if (mode == 1) {
+        } else if (mode == 1) {
             model.addHumanPlayer("player");
             model.addComputerPlayer("computer");
-        }
-        else if (mode == 2) {
+        } else if (mode == 2) {
             model.addComputerPlayer("computer1");
             model.addComputerPlayer("computer2");
         }
 
         StageFactory.registerModelAndView("hole", "model.HoleStageModel", "view.HoleStageView");
         View holeView = new View(model);
-        HoleController control = new HoleController(model,holeView);
+        HoleController control = new HoleController(model, holeView);
         control.setFirstStageName("hole");
         try {
             control.startGame();
             control.stageLoop();
-        }
-        catch(GameException e) {
+        } catch (GameException e) {
             System.out.println("Cannot start the game. Abort");
         }
+
+        scanner.close();
     }
 }
