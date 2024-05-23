@@ -42,10 +42,10 @@ public class HoleStageFactory extends StageElementsFactory {
         stageModel.setBoard(board);
 
         // create pawns
-        Pawn[] blackPawns = new Pawn[42];
-        Pawn[] redPawns = new Pawn[42];
+        Pawn[] blackPawns = new Pawn[48];
+        Pawn[] redPawns = new Pawn[48];
 
-        for(int i=0; i<42; i++) {
+        for(int i=0; i<48; i++) {
             blackPawns[i] = new Pawn(i + 1, Pawn.PAWN_BLACK, stageModel);
             redPawns[i] = new Pawn(i + 1, Pawn.PAWN_RED, stageModel);
         }

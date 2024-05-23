@@ -23,6 +23,7 @@ public class HoleController extends Controller {
     BufferedReader consoleIn;
     boolean firstPlayer;
     private int pawnIndex;
+    private String vainqueur;
 
     public HoleController(Model model, View view) {
         super(model, view);
@@ -42,7 +43,12 @@ public class HoleController extends Controller {
             endOfTurn();
             update();
             if (model.getGameStage().checkWinCondition()) {
-                System.out.println("Gagné !");
+                if(model.getIdPlayer() == 0){
+                    vainqueur = "VERT";
+                }else{
+                    vainqueur = "VIOLET";
+                }
+                System.out.println("\nLe joueur "+vainqueur+" a gagné la partie !!\n");
                 control.HoleConsole.gameChoise();
             }
         }
@@ -96,7 +102,7 @@ public class HoleController extends Controller {
         if (!gameStage.getBoard().isEmptyAt(row, col)) return false;
 
         // Ensure the pawnIndex does not exceed the array bounds
-        if (pawnIndex >= 42) {
+        if (pawnIndex >=100) {
             System.out.println("Tous les pions ont été placés.");
             return false;
         }

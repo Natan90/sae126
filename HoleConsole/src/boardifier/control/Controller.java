@@ -220,6 +220,7 @@ public abstract class Controller {
         // add the look of the element to the inner looks of the container look =>
         // the innerLayout of the container look now manages the element look location.
         containerLook.addInnerLook(look, row, col);
+
     }
 
     public void moveElementLookToContainerLookCell(GameElement element, ElementLook look, int rowSrc, int colSrc, int rowDest, int colDest) {
