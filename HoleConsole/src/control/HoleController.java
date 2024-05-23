@@ -31,6 +31,14 @@ public class HoleController extends Controller {
         pawnIndex = 0;
     }
 
+    public int getPawnIndex() {
+        return pawnIndex;
+    }
+
+    public void incrementPawnIndex() {
+        pawnIndex++;
+    }
+
     /**
      * Defines what to do within the single stage of the single party
      * It is pretty straight forward to write :
@@ -102,7 +110,7 @@ public class HoleController extends Controller {
         if (!gameStage.getBoard().isEmptyAt(row, col)) return false;
 
         // Ensure the pawnIndex does not exceed the array bounds
-        if (pawnIndex >=100) {
+        if (pawnIndex >=48) {
             System.out.println("Tous les pions ont été placés.");
             return false;
         }
@@ -131,13 +139,11 @@ public class HoleController extends Controller {
         ActionPlayer play = new ActionPlayer(model, this, actions);
         play.start();
 
-        pawnIndex++;
+        incrementPawnIndex();
 
         HoleBoard.lastCubePosition = new Point(col, row);
 
         System.out.println(pawnIndex + " " + pawn);
         return true;
     }
-
-
 }
