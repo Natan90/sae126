@@ -31,7 +31,6 @@ public class HoleStageFactory extends StageElementsFactory {
 
     @Override
     public void setup() {
-
         // create the text that displays the player name and put it in 0,0 in the virtual space
         TextElement text = new TextElement(stageModel.getCurrentPlayerName(), stageModel);
         text.setLocation(0,0);
@@ -42,65 +41,18 @@ public class HoleStageFactory extends StageElementsFactory {
         // assign the board to the game stage model
         stageModel.setBoard(board);
 
-        //create the black pot in 18,0 in the virtual space
-        HolePawnPot blackPot = new HolePawnPot(60,0, stageModel);
-        // assign the black pot to the game stage model
-        stageModel.setBlackPot(blackPot);
-        //create the red pot in 25,0 in the virtual space
-        HolePawnPot redPot = new HolePawnPot(38,0, stageModel);
-        // assign the red pot to the game stage model
-        stageModel.setRedPot(redPot);
+        // create pawns
+        Pawn[] blackPawns = new Pawn[42];
+        Pawn[] redPawns = new Pawn[42];
 
-        /* create the pawns
-            NB: their coordinates are by default 0,0 but since they are put
-            within the pots, their real coordinates will be computed by the view
-         */
-        Pawn[] blackPawns = new Pawn[24];
-        for(int i=0;i<24;i++) {
+        for(int i=0; i<42; i++) {
             blackPawns[i] = new Pawn(i + 1, Pawn.PAWN_BLACK, stageModel);
-        }
-        // assign the black pawns to the game stage model
-        stageModel.setBlackPawns(blackPawns);
-        Pawn[] redPawns = new Pawn[24];
-        for(int i=0;i<24;i++) {
             redPawns[i] = new Pawn(i + 1, Pawn.PAWN_RED, stageModel);
         }
-        // assign the black pawns to the game stage model
+        // assign the pawns to the game stage model
+        stageModel.setBlackPawns(blackPawns);
         stageModel.setRedPawns(redPawns);
-
-        // finally put the pawns to their pot
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 24; col++) {
-                int index = row * 8 + col; // Calcul de l'index en fonction de la ligne et de la colonne
-                if (index < blackPawns.length) {
-                    blackPot.addElement(blackPawns[index], col, row);
-                }
-                if (index < redPawns.length) {
-                    redPot.addElement(redPawns[index], col, row);
-                }
-            }
-        }
-
-        /* Example with a main container that takes the ownership of the location
-           of the element that are put within.
-           If we put text, board, black/red pots within this container, their initial
-           location in the virtual space is no more relevant.
-           In such a case, we also need to create a look for the main container, see HoleStageView
-           comment at the end of the class.
-
-        // create the main container with 2 rows and 3 columns, in 0,0 in the virtual space
-        ContainerElement mainContainer = new ContainerElement("rootcontainer",0,0,2,3, stageModel);
-        // for cell 0,1, span over the row below => the column 1 goes from top to bottom of the container
-        mainContainer.setCellSpan(0,1,2,1);
-        // for cell 0,2, span over the row below => the column 2 goes from top to bottom of the container
-        mainContainer.setCellSpan(0,2,2,1);
-        // assign the
-        stageModel.setMainContainer(mainContainer);
-        // assign elements to main container cells
-        mainContainer.addElement(text,0,0);
-        mainContainer.addElement(board, 1,0);
-        mainContainer.addElement(blackPot,0,1);
-        mainContainer.addElement(redPot,0,2);
-        */
     }
+
+
 }

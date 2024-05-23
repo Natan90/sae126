@@ -4,13 +4,14 @@ import boardifier.control.ActionFactory;
 import boardifier.control.ActionPlayer;
 import boardifier.control.Controller;
 import boardifier.model.GameElement;
-import boardifier.model.ContainerElement;
 import boardifier.model.Model;
 import boardifier.model.Player;
 import boardifier.model.action.ActionList;
+import boardifier.view.ElementLook;
 import boardifier.view.View;
 import model.HoleBoard;
 import model.HoleStageModel;
+import view.PawnLook;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -37,7 +38,7 @@ public class HoleController extends Controller {
     public void stageLoop() {
         consoleIn = new BufferedReader(new InputStreamReader(System.in));
         update();
-        while(! model.isEndStage()) {
+        while(!model.isEndStage()) {
             playTurn();
             endOfTurn();
             update();
@@ -50,27 +51,24 @@ public class HoleController extends Controller {
         Player p = model.getCurrentPlayer();
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
-            HoleDecider decider = new HoleDecider(model,this);
+            HoleDecider decider = new HoleDecider(model, this);
             ActionPlayer play = new ActionPlayer(model, this, decider, null);
             play.start();
-        }
-        else {
+        } else {
             boolean ok = false;
             while (!ok) {
-                System.out.print(p.getName()+ " > ");
+                System.out.print(p.getName() + " > ");
                 try {
                     String line = consoleIn.readLine();
                     if (line.length() == 2) {
                         ok = analyseAndPlay(line);
                     }
                     if (!ok) {
-                        System.out.println("incorrect instruction. retry !");
+                        System.out.println("incorrect input. Try again.");
                     }
-                }
-                catch(IOException e) {}
+                } catch (IOException e) {}
             }
         }
-
     }
 
     public void endOfTurn() {
@@ -86,31 +84,44 @@ public class HoleController extends Controller {
         stageModel.getPlayerName().setText(p.getName());
     }
 
-
     private boolean analyseAndPlay(String line) {
         HoleStageModel gameStage = (HoleStageModel) model.getGameStage();
-        // get the pawn value from the first char
-        if ((pawnIndex < 0) || (pawnIndex > 24)) return false;
 
-
-        // get the ccords in the board
+        // get the coords in the board
         int col = (int) (line.charAt(0) - 'A');
         int row = (int) (line.charAt(1) - '1');
         // check coords validity
         if ((row < 0) || (row > 6)) return false;
         if ((col < 0) || (col > 6)) return false;
-        // check if the pawn is still in its pot
-        ContainerElement pot = null;
-        if (model.getIdPlayer() == 0) {
-            pot = gameStage.getBlackPot();
-        } else {
-            pot = gameStage.getRedPot();
+
+        // Check if the selected position on the board is empty
+        if (!gameStage.getBoard().isEmptyAt(row, col)) return false;
+
+        // Ensure the pawnIndex does not exceed the array bounds
+        if (pawnIndex >= 42) {
+            System.out.println("Tous les pions ont été placés.");
+            return false;
         }
-        if (pot.isEmptyAt(pawnIndex,0)) return false;
-        GameElement pawn = pot.getElement(pawnIndex,0);
-        // compute valid cells for the chosen pawn
-        gameStage.getBoard().setValidCells(pawnIndex+1);
-        if (!gameStage.getBoard().canReachCell(row,col)) return false;
+
+        // Get the current player's pawn
+        GameElement pawn;
+        if (model.getIdPlayer() == 0) {
+            pawn = gameStage.getBlackPawns()[pawnIndex];
+        } else {
+            pawn = gameStage.getRedPawns()[pawnIndex];
+        }
+
+        // Compute valid cells for the chosen pawn
+        gameStage.getBoard().setValidCells(pawnIndex + 1);
+        if (!gameStage.getBoard().canReachCell(row, col)) return false;
+
+        // Create the look for the pawn if it doesn't exist
+        ElementLook look = view.getElementLook(pawn);
+        if (look == null) {
+            look = new PawnLook(pawn);
+            //view.addElementLook(look);
+        }
+
         ActionList actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", row, col);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
         ActionPlayer play = new ActionPlayer(model, this, actions);
@@ -120,10 +131,9 @@ public class HoleController extends Controller {
 
         HoleBoard.lastCubePosition = new Point(col, row);
 
-        System.out.println(pawnIndex+ " "+pawn);
+        System.out.println(pawnIndex + " " + pawn);
         return true;
     }
-
 
 
 }

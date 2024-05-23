@@ -34,32 +34,50 @@ public class HoleDecider extends Decider {
         int rowDest = 0; // the dest. row in board
         int colDest = 0; // the dest. col in board
 
+        System.out.println("Deciding move for player: " + model.getIdPlayer());
+
         if (model.getIdPlayer() == Pawn.PAWN_BLACK) {
             pot = stage.getBlackPot();
-        }
-        else {
+        } else {
             pot = stage.getRedPot();
         }
 
-        for(int i=0;i<4;i++) {
-            Pawn p = (Pawn)pot.getElement(i,0);
-            // if there is a pawn in i.
-            if (p != null) {
-                // get the valid cells
-                List<Point> valid = board.computeValidCells(p.getNumber());
-                if (valid.size() != 0) {
-                    // choose at random one of the valid cells
-                    int id = loto.nextInt(valid.size());
-                    pawn = p;
-                    rowDest = valid.get(id).y;
-                    colDest = valid.get(id).x;
-                    break; // stop the loop
+        if (pot == null) {
+            System.err.println("Error: Pot is null for player: " + model.getIdPlayer());
+        } else {
+            System.out.println("Using pot: " + (model.getIdPlayer() == Pawn.PAWN_BLACK ? "Black" : "Red"));
+        }
+
+        for (int row = 0; row < 7; row++) {
+            for (int col = 0; col < 7; col++) {
+                Pawn p = (Pawn) pot.getElement(row, col);
+                if (p != null) {
+                    System.out.println("Found pawn at position: (" + row + ", " + col + ")");
+                    List<Point> valid = board.computeValidCells(p.getNumber());
+                    System.out.println("Valid cells for pawn " + p.getNumber() + ": " + valid);
+
+                    if (valid.size() != 0) {
+                        int id = loto.nextInt(valid.size());
+                        pawn = p;
+                        rowDest = valid.get(id).y;
+                        colDest = valid.get(id).x;
+                        System.out.println("Chosen cell for pawn " + p.getNumber() + ": (" + rowDest + ", " + colDest + ")");
+                        break;
+                    }
+                } else {
+                    System.out.println("No pawn at position: (" + row + ", " + col + ")");
                 }
             }
         }
 
-        ActionList actions = ActionFactory.generatePutInContainer( model, pawn, "holeboard", rowDest, colDest);
+        if (pawn == null) {
+            System.err.println("Error: No pawn found to move for player: " + model.getIdPlayer());
+        }
+
+        ActionList actions = ActionFactory.generatePutInContainer(model, pawn, "holeboard", rowDest, colDest);
         actions.setDoEndOfTurn(true); // after playing this action list, it will be the end of turn for current player.
+
+        System.out.println("Generated actions: " + actions);
 
         return actions;
     }

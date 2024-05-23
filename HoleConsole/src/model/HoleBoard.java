@@ -7,15 +7,13 @@ import boardifier.model.ContainerElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
-import java.util.Objects;
 
 public class HoleBoard extends ContainerElement {
 
     public static Point lastCubePosition = null;
+
     public HoleBoard(int x, int y, GameStageModel gameStageModel) {
-
         super("holeboard", x, y, 7, 7, gameStageModel);
-
     }
 
     public void setValidCells(int number) {
@@ -29,40 +27,37 @@ public class HoleBoard extends ContainerElement {
 
     public List<Point> computeValidCells(int number) {
         List<Point> validCells = new ArrayList<>();
-        // Loop through each cell on the board
+        boolean surrounded = lastCubePosition != null && isSurrounded(lastCubePosition.y, lastCubePosition.x);
+
+        // Parcourez chaque cellule du tableau
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
-                // Check if the cell is empty
+                // Vérifiez si la cellule est vide
                 if (isEmptyAt(i, j)) {
-                    // Check if it's the first turn (placement is totally free)
+                    // Vérifiez si c'est le premier tour
                     if (isEmpty()) {
                         validCells.add(new Point(j, i));
                     } else {
-                        // Check adjacency to a cube of the opposite color
-                        if (adjacentToLastCube(i, j, number)) {
+                        // Vérifier la contiguïté à un cube de couleur opposée
+                        if (adjacentToLastCube(i, j, number) || (surrounded && adjacentToAnyOppositeCube(i, j, number))) {
                             validCells.add(new Point(j, i));
                         }
                     }
                 }
             }
         }
+        System.out.println("Valid cells computed: " + validCells);
         return validCells;
     }
 
-    // Method to check if a cell is adjacent to a cube of the opposite color
+    // Méthode pour vérifier si une cellule est adjacente à un cube
     private boolean adjacentToLastCube(int row, int col, int number) {
-
-        // Check adjacent cells
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 int newRow = row + i;
                 int newCol = col + j;
-                // Check if the new position is within the board boundaries
                 if (newRow >= 0 && newRow < 7 && newCol >= 0 && newCol < 7) {
-                    // Check if the adjacent cell contains a cube of the opposite color
                     Pawn adjacentCube = (Pawn) getElement(newRow, newCol);
-
-                    //if (adjacentCube != null && adjacentCube.getNumber() % 2 != number % 2) {
                     if (adjacentCube != null && lastCubePosition != null && newRow == lastCubePosition.y && newCol == lastCubePosition.x) {
                         return true;
                     }
@@ -70,5 +65,40 @@ public class HoleBoard extends ContainerElement {
             }
         }
         return false;
+    }
+
+    // Méthode pour vérifier si une cellule est adjacente à un cube de la couleur opposée
+    private boolean adjacentToAnyOppositeCube(int row, int col, int number) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                int newRow = row + i;
+                int newCol = col + j;
+                if (newRow >= 0 && newRow < 7 && newCol >= 0 && newCol < 7) {
+                    Pawn adjacentCube = (Pawn) getElement(newRow, newCol);
+                    if (adjacentCube != null && adjacentCube.getNumber() % 2 != number % 2) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    // Méthode pour vérifier si le dernier cube placé est entouré d'autres cubes
+    private boolean isSurrounded(int row, int col) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i != 0 || j != 0) {
+                    int newRow = row + i;
+                    int newCol = col + j;
+                    if (newRow >= 0 && newRow < 7 && newCol >= 0 && newCol < 7) {
+                        if (isEmptyAt(newRow, newCol)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 }

@@ -13,6 +13,7 @@ import boardifier.model.action.*;
 public class ActionFactory {
 
     public static ActionList generatePutInContainer(Model model, GameElement element, String nameContainerDest, int rowDest, int colDest) {
+        
         ContainerElement containerSrc = element.getContainer();
         ContainerElement containerDest = model.getContainer(nameContainerDest);
 

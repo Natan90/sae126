@@ -316,11 +316,14 @@ public class ContainerElement extends StaticElement {
      * @return the first element stored or null if there are no elements
      */
     public GameElement getFirstElement(int row, int col) {
-        if (grid[row][col].size() > 0) {
-            return grid[row][col].get(0);
+        if (row >= 0 && row < nbRows && col >= 0 && col < nbCols) {
+            if (grid[row][col].size() > 0) {
+                return grid[row][col].get(0);
+            }
         }
         return null;
     }
+
 
     /**
      * get the last element that is stored in cell row,col.
