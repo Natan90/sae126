@@ -22,7 +22,6 @@ public class HoleController extends Controller {
 
     BufferedReader consoleIn;
     boolean firstPlayer;
-
     private int pawnIndex;
 
     public HoleController(Model model, View view) {
@@ -42,6 +41,10 @@ public class HoleController extends Controller {
             playTurn();
             endOfTurn();
             update();
+            if (model.getGameStage().checkWinCondition()) {
+                System.out.println("Gagné !");
+                control.HoleConsole.gameChoise();
+            }
         }
         endGame();
     }
@@ -72,11 +75,6 @@ public class HoleController extends Controller {
     }
 
     public void endOfTurn() {
-        if (model.getGameStage().checkWinCondition()) {
-            System.out.println("Gagné !");
-            return;
-        }
-
         model.setNextPlayer();
         // get the new player to display its name
         Player p = model.getCurrentPlayer();
