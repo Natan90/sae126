@@ -101,4 +101,40 @@ public class HoleBoard extends ContainerElement {
         }
         return true;
     }
+
+    public static boolean canFormFourInARow(int currentPlayer) {
+        // On parcourt chaque cellule du plateau
+        for (int row = 0; row < 7; row++) {
+            for (int col = 0; col < 7; col++) {
+                // On vérifie seulement les positions où un cube peut potentiellement être placé
+                if (isEmptyAt(row, col)) {
+                    // On vérifie les possibilités d'alignement dans toutes les directions
+                    if (checkDirection(row, col, 1, 0, currentPlayer, 1) || // Horizontal
+                            checkDirection(row, col, 0, 1, currentPlayer, 1) || // Vertical
+                            checkDirection(row, col, 1, 1, currentPlayer, 1) || // Diagonal droite
+                            checkDirection(row, col, -1, 1, currentPlayer, 1)) { // Diagonal gauche
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkDirection(int row, int col, int dRow, int dCol, int currentPlayer, int count) {
+        if (count == 4) {
+            return true; // Un alignement de quatre cubes est possible
+        }
+
+        int newRow = row + dRow;
+        int newCol = col + dCol;
+        if (newRow >= 0 && newRow < 7 && newCol >= 0 && newCol < 7 && isEmptyAt(newRow, newCol)) {
+            // On continue de vérifier dans la même direction
+            return checkDirection(newRow, newCol, dRow, dCol, currentPlayer, count + 1);
+        }
+        return false; // Blocage ou fin du plateau
+    }
+
+
+
 }
