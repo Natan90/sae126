@@ -59,6 +59,11 @@ public class HoleController extends Controller {
                 System.out.println("\nLe joueur "+vainqueur+" a gagné la partie !!\n");
                 control.HoleConsole.gameChoise();
             }
+            HoleStageModel stageModel = (HoleStageModel) model.getGameStage();
+            if (!stageModel.getBoard().canFormFourInARow(model.getIdPlayer())) {
+                System.out.println("Il n'est plus possible de faire un alignement de 4 cubes, fin de la partie. Aucun gagnant; partie nulle.");
+                control.HoleConsole.gameChoise();
+            }
         }
         endGame();
     }
