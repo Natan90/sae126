@@ -8,9 +8,9 @@ import java.util.List;
 
 public class ContainerElement extends StaticElement {
     protected String name;
-    protected int nbRows;
-    protected int nbCols;
-    protected List<GameElement>[][] grid;
+    protected static int nbRows;
+    protected static int nbCols;
+    protected static List<GameElement>[][] grid;
     protected int[][] rowSpans;
     protected int[][] colSpans;
 
@@ -315,7 +315,7 @@ public class ContainerElement extends StaticElement {
      * @param col the cell col
      * @return the first element stored or null if there are no elements
      */
-    public GameElement getFirstElement(int row, int col) {
+    public static GameElement getFirstElement(int row, int col) {
         if (row >= 0 && row < nbRows && col >= 0 && col < nbCols) {
             if (grid[row][col].size() > 0) {
                 return grid[row][col].get(0);
@@ -349,7 +349,7 @@ public class ContainerElement extends StaticElement {
      * @return the first element stored or null if there are no elements
      * @see ContainerElement#getFirstElement(int, int)
      */
-    public GameElement getElement(int row, int col) {
+    public static GameElement getElement(int row, int col) {
         return getFirstElement(row, col);
     }
 
@@ -400,7 +400,7 @@ public class ContainerElement extends StaticElement {
      * @param col the cell col
      * @return true if there is no element, otherwise false
      */
-    public boolean isEmptyAt(int row, int col) {
+    public static boolean isEmptyAt(int row, int col) {
         if (grid[row][col].isEmpty()) return true;
         return false;
     }
