@@ -24,11 +24,18 @@ public class HoleController extends Controller {
     boolean firstPlayer;
     private int pawnIndex;
     private String vainqueur;
+    private HoleDecider holeDecider;
+    private RandomDecider randomDecider;
+
+    private DefensiveDecider DefensiveDecider;
 
     public HoleController(Model model, View view) {
         super(model, view);
         firstPlayer = true;
         pawnIndex = 0;
+        holeDecider = new HoleDecider(model, this);
+        randomDecider = new RandomDecider(model, this);
+        DefensiveDecider = new DefensiveDecider(model, this);
     }
 
     public int getPawnIndex() {
@@ -53,15 +60,11 @@ public class HoleController extends Controller {
             if (model.getGameStage().checkWinCondition()) {
                 if(model.getIdPlayer() == 0){
                     vainqueur = "VERT";
+
                 }else{
                     vainqueur = "VIOLET";
                 }
                 System.out.println("\nLe joueur "+vainqueur+" a gagné la partie !!\n");
-                control.HoleConsole.gameChoise();
-            }
-            HoleStageModel stageModel = (HoleStageModel) model.getGameStage();
-            if (!stageModel.getBoard().canFormFourInARow(model.getIdPlayer())) {
-                System.out.println("Il n'est plus possible de faire un alignement de 4 cubes, fin de la partie. Aucun gagnant; partie nulle.");
                 control.HoleConsole.gameChoise();
             }
         }
@@ -73,8 +76,14 @@ public class HoleController extends Controller {
         Player p = model.getCurrentPlayer();
         if (p.getType() == Player.COMPUTER) {
             System.out.println("COMPUTER PLAYS");
-            HoleDecider decider = new HoleDecider(model, this);
-            ActionPlayer play = new ActionPlayer(model, this, decider, null);
+            ActionPlayer play;
+            if (model.getIdPlayer() == 0) {
+                // Player 1 uses Violet
+                play = new ActionPlayer(model, this, randomDecider, null);
+            } else {
+                // Player 2 uses Vert
+                play = new ActionPlayer(model, this, DefensiveDecider , null);
+            }
             play.start();
         } else {
             boolean ok = false;

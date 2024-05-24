@@ -1,8 +1,10 @@
 package model;
 
 import boardifier.control.Logger;
+import boardifier.model.GameElement;
 import boardifier.model.GameStageModel;
 import boardifier.model.ContainerElement;
+import boardifier.view.ConsoleColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,7 @@ public class HoleBoard extends ContainerElement {
     }
 
     // Méthode pour vérifier si une cellule est adjacente à un cube
-    private boolean adjacentToLastCube(int row, int col, int number) {
+    public boolean adjacentToLastCube(int row, int col, int number) {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 int newRow = row + i;
@@ -102,39 +104,28 @@ public class HoleBoard extends ContainerElement {
         return true;
     }
 
-    public static boolean canFormFourInARow(int currentPlayer) {
-        // On parcourt chaque cellule du plateau
-        for (int row = 0; row < 7; row++) {
-            for (int col = 0; col < 7; col++) {
-                // On vérifie seulement les positions où un cube peut potentiellement être placé
-                if (isEmptyAt(row, col)) {
-                    // On vérifie les possibilités d'alignement dans toutes les directions
-                    if (checkDirection(row, col, 1, 0, currentPlayer, 1) || // Horizontal
-                            checkDirection(row, col, 0, 1, currentPlayer, 1) || // Vertical
-                            checkDirection(row, col, 1, 1, currentPlayer, 1) || // Diagonal droite
-                            checkDirection(row, col, -1, 1, currentPlayer, 1)) { // Diagonal gauche
-                        return true;
-                    }
-                }
+    public void placeCube(Point position, int playerNumber, int color) {
+        if (isEmptyAt(position.y, position.x)) {
+            Pawn temporaryPawn = new Pawn(playerNumber, color, gameStageModel);
+            addElement(temporaryPawn, position.y, position.x);
+            lastCubePosition = position;  // Mise à jour de la position du dernier pion placé
+        }
+    }
+
+
+
+    private GameStageModel getGameStageModel() {
+        return this.gameStageModel;  // Retourne le GameStageModel actuellement stocké
+    }
+
+
+
+    public void removeCube(Point position) {
+        if (!isEmptyAt(position.y, position.x)) {
+            GameElement elementToRemove = getElement(position.y, position.x);
+            if (elementToRemove != null) {
+                removeElement(elementToRemove);
             }
         }
-        return false;
     }
-
-    private static boolean checkDirection(int row, int col, int dRow, int dCol, int currentPlayer, int count) {
-        if (count == 4) {
-            return true; // Un alignement de quatre cubes est possible
-        }
-
-        int newRow = row + dRow;
-        int newCol = col + dCol;
-        if (newRow >= 0 && newRow < 7 && newCol >= 0 && newCol < 7 && isEmptyAt(newRow, newCol)) {
-            // On continue de vérifier dans la même direction
-            return checkDirection(newRow, newCol, dRow, dCol, currentPlayer, count + 1);
-        }
-        return false; // Blocage ou fin du plateau
-    }
-
-
-
 }
